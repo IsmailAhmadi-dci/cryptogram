@@ -2,8 +2,17 @@
 
 // Global Variables : ********************************************************************************
 
-// alphabets : 
+const lb = document.getElementById('letter-landing-zone');
+let letterButtons
+
+// alphabets :
 const alphabets = 'abcdefghijklmnopqrstuvwxyz';
+const codeMap = alphabets.split("").reduce(( codes, letter ) => {
+  codes[letter] = ""
+  return codes
+}, {})
+
+
 let userKey = '**************************';
 let shiftedAlphabets;
 let txt, quote, encryptedQuote;
@@ -40,13 +49,16 @@ keyboardPopulator();
 
 // letter board populator
 function letterBoardPopulator() {
-    const lb = document.getElementById('letter-landing-zone');
+    // const lb = document.getElementById('letter-landing-zone');
     let content = '';
     for (const letter of alphabets) {
         content += `<button onclick="selectLetter('${letter}')">${letter.toUpperCase()}</button>`;
     }
     content += `<button onclick="selectLetter('?')">[none]</button>`;
     lb.innerHTML = content;
+
+    // letterButtons = Array.from(lb.querySelectorAll("button"))
+    letterButtons = lb.querySelectorAll("button");
 }
 
 letterBoardPopulator()
@@ -77,9 +89,6 @@ function encryptingMessage(string) {
   return encrypted;
 }
 encryptedQuote = encryptingMessage(txt);
-
-console.log(shiftedAlphabets);
-
 
 
 
@@ -121,19 +130,36 @@ function selectLetter(letter) {
   if (alphabets.includes(letter)) {
       theKey.innerHTML = letter;
       closeLetterBoard();
+
+      codeMap[selectedKey] = letter
+      
   } else {
     theKey.innerHTML = '';
     closeLetterBoard();
   }
 }
 
-// Setting an alternative key: 
+// Setting an alternative key:
 function selectKeyFor(letter) {
   // oppening the letter board
   const elem = document.getElementById('letter-board');
+
+  disableMappedLetters()
+
   elem.style.display = 'flex';
   // marking the alternative key:
   selectedKey = letter;
 }
 
 
+
+function disableMappedLetters (param) {
+  const mappedLetters = Object.values(codeMap)
+
+  for(const button of letterButtons) {
+    const letter = button.innerHTML.toLowerCase()
+    if (mappedLetters.indexOf(letter) >= 0) {
+      button.setAttribute("disabled", true)
+    }
+  }
+}
