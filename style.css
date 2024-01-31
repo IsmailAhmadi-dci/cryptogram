@@ -213,3 +213,8 @@ footer a {
     color: maroon;
     background-color: #ddd;
 }
+
+#letter-landing-zone button:disabled {
+    color: #777;
+    background-color: transparent;
+}

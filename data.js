@@ -1,4 +1,4 @@
-export const wisdomQuotes = [
+const quotes = [
   {
     id: 1,
     quote: "The only true wisdom is in knowing you know nothing.",
